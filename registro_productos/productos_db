@@ -1,0 +1,396 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 15.2
+-- Dumped by pg_dump version 15.2
+
+-- Started on 2025-03-21 17:34:29
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 215 (class 1259 OID 1889451)
+-- Name: bodega; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.bodega (
+    id integer NOT NULL,
+    nombre character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.bodega OWNER TO postgres;
+
+--
+-- TOC entry 214 (class 1259 OID 1889450)
+-- Name: bodega_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.bodega_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.bodega_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3362 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: bodega_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.bodega_id_seq OWNED BY public.bodega.id;
+
+
+--
+-- TOC entry 219 (class 1259 OID 1889470)
+-- Name: moneda; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.moneda (
+    id integer NOT NULL,
+    nombre character varying(20) NOT NULL
+);
+
+
+ALTER TABLE public.moneda OWNER TO postgres;
+
+--
+-- TOC entry 218 (class 1259 OID 1889469)
+-- Name: moneda_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.moneda_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.moneda_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3363 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: moneda_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.moneda_id_seq OWNED BY public.moneda.id;
+
+
+--
+-- TOC entry 221 (class 1259 OID 1889477)
+-- Name: producto; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.producto (
+    id integer NOT NULL,
+    codigo character varying(15) NOT NULL,
+    nombre character varying(50) NOT NULL,
+    bodega_id integer,
+    sucursal_id integer,
+    moneda_id integer,
+    precio numeric(10,2) NOT NULL,
+    materiales text NOT NULL,
+    descripcion text NOT NULL,
+    CONSTRAINT producto_precio_check CHECK ((precio > (0)::numeric))
+);
+
+
+ALTER TABLE public.producto OWNER TO postgres;
+
+--
+-- TOC entry 220 (class 1259 OID 1889476)
+-- Name: producto_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.producto_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.producto_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3364 (class 0 OID 0)
+-- Dependencies: 220
+-- Name: producto_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.producto_id_seq OWNED BY public.producto.id;
+
+
+--
+-- TOC entry 217 (class 1259 OID 1889458)
+-- Name: sucursal; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.sucursal (
+    id integer NOT NULL,
+    nombre character varying(50) NOT NULL,
+    bodega_id integer
+);
+
+
+ALTER TABLE public.sucursal OWNER TO postgres;
+
+--
+-- TOC entry 216 (class 1259 OID 1889457)
+-- Name: sucursal_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.sucursal_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.sucursal_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3365 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: sucursal_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.sucursal_id_seq OWNED BY public.sucursal.id;
+
+
+--
+-- TOC entry 3188 (class 2604 OID 1889454)
+-- Name: bodega id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bodega ALTER COLUMN id SET DEFAULT nextval('public.bodega_id_seq'::regclass);
+
+
+--
+-- TOC entry 3190 (class 2604 OID 1889473)
+-- Name: moneda id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.moneda ALTER COLUMN id SET DEFAULT nextval('public.moneda_id_seq'::regclass);
+
+
+--
+-- TOC entry 3191 (class 2604 OID 1889480)
+-- Name: producto id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.producto ALTER COLUMN id SET DEFAULT nextval('public.producto_id_seq'::regclass);
+
+
+--
+-- TOC entry 3189 (class 2604 OID 1889461)
+-- Name: sucursal id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sucursal ALTER COLUMN id SET DEFAULT nextval('public.sucursal_id_seq'::regclass);
+
+
+--
+-- TOC entry 3350 (class 0 OID 1889451)
+-- Dependencies: 215
+-- Data for Name: bodega; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.bodega (id, nombre) FROM stdin;
+1	Bodega Central
+2	Bodega Norte
+3	Bodega Sur
+\.
+
+
+--
+-- TOC entry 3354 (class 0 OID 1889470)
+-- Dependencies: 219
+-- Data for Name: moneda; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.moneda (id, nombre) FROM stdin;
+1	USD
+2	EUR
+3	PEN
+\.
+
+
+--
+-- TOC entry 3356 (class 0 OID 1889477)
+-- Dependencies: 221
+-- Data for Name: producto; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.producto (id, codigo, nombre, bodega_id, sucursal_id, moneda_id, precio, materiales, descripcion) FROM stdin;
+14	PL2888	Sardinas enlatadas	3	3	2	2333333.00	Metal, Plástico	las sardinas son animales no se lo coman
+\.
+
+
+--
+-- TOC entry 3352 (class 0 OID 1889458)
+-- Dependencies: 217
+-- Data for Name: sucursal; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.sucursal (id, nombre, bodega_id) FROM stdin;
+1	Sucursal Centro	1
+2	Sucursal Norte	2
+3	Sucursal Sur	3
+4	Sucursal Norte 1	2
+5	Sucursal Norte 2	2
+6	Sucursal Centro 1	1
+7	Sucursal Centro 2	1
+8	Sucursal Sur 1	3
+9	Sucursal Sur 2	3
+\.
+
+
+--
+-- TOC entry 3366 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: bodega_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.bodega_id_seq', 3, true);
+
+
+--
+-- TOC entry 3367 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: moneda_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.moneda_id_seq', 3, true);
+
+
+--
+-- TOC entry 3368 (class 0 OID 0)
+-- Dependencies: 220
+-- Name: producto_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.producto_id_seq', 14, true);
+
+
+--
+-- TOC entry 3369 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: sucursal_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.sucursal_id_seq', 9, true);
+
+
+--
+-- TOC entry 3194 (class 2606 OID 1889456)
+-- Name: bodega bodega_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bodega
+    ADD CONSTRAINT bodega_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3198 (class 2606 OID 1889475)
+-- Name: moneda moneda_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.moneda
+    ADD CONSTRAINT moneda_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3200 (class 2606 OID 1889487)
+-- Name: producto producto_codigo_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.producto
+    ADD CONSTRAINT producto_codigo_key UNIQUE (codigo);
+
+
+--
+-- TOC entry 3202 (class 2606 OID 1889485)
+-- Name: producto producto_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.producto
+    ADD CONSTRAINT producto_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3196 (class 2606 OID 1889463)
+-- Name: sucursal sucursal_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sucursal
+    ADD CONSTRAINT sucursal_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3204 (class 2606 OID 1889488)
+-- Name: producto producto_bodega_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.producto
+    ADD CONSTRAINT producto_bodega_id_fkey FOREIGN KEY (bodega_id) REFERENCES public.bodega(id);
+
+
+--
+-- TOC entry 3205 (class 2606 OID 1889498)
+-- Name: producto producto_moneda_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.producto
+    ADD CONSTRAINT producto_moneda_id_fkey FOREIGN KEY (moneda_id) REFERENCES public.moneda(id);
+
+
+--
+-- TOC entry 3206 (class 2606 OID 1889493)
+-- Name: producto producto_sucursal_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.producto
+    ADD CONSTRAINT producto_sucursal_id_fkey FOREIGN KEY (sucursal_id) REFERENCES public.sucursal(id);
+
+
+--
+-- TOC entry 3203 (class 2606 OID 1889464)
+-- Name: sucursal sucursal_bodega_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sucursal
+    ADD CONSTRAINT sucursal_bodega_id_fkey FOREIGN KEY (bodega_id) REFERENCES public.bodega(id);
+
+
+-- Completed on 2025-03-21 17:34:30
+
+--
+-- PostgreSQL database dump complete
+--
+
